@@ -10,14 +10,14 @@ import { pathToRegexp } from "path-to-regexp";
 
 type LocationChangeAction = Action | "INIT";
 
-type RerouteState = {
+type ReroutesState = {
   base: string;
   action: LocationChangeAction | null;
   location: Location;
   transitioning: boolean;
 };
 
-const initialState: RerouteState = {
+const initialState: ReroutesState = {
   action: null,
   base: "/",
   location: {
@@ -29,7 +29,7 @@ const initialState: RerouteState = {
   transitioning: false,
 };
 
-const baseName = "@@reroute";
+const baseName = "@@reroutes";
 
 const createHistoryChannel = (history: History) => {
   return eventChannel<{ location: Location; action: LocationChangeAction }>(
@@ -47,9 +47,9 @@ const pathJoin = (...paths: string[]) => {
   return paths.join("/").replace(/\/+/g, "/");
 };
 
-const createReroute = (key: string) => {
+const createReroutes = (key: string) => {
   const name = `${baseName}/${key}`;
-  const reroute = createModule({
+  const reroutes = createModule({
     name,
     initialState,
     reducers: {
@@ -168,8 +168,8 @@ const createReroute = (key: string) => {
   ) => {
     return (
       action: AnyAction
-    ): action is ReturnType<typeof reroute.actions.locationChanged> => {
-      const isLocationChanged = reroute.actions.locationChanged.match(action);
+    ): action is ReturnType<typeof reroutes.actions.locationChanged> => {
+      const isLocationChanged = reroutes.actions.locationChanged.match(action);
 
       return (
         isLocationChanged &&
@@ -180,8 +180,8 @@ const createReroute = (key: string) => {
     };
   };
 
-  const useReroute = () => {
-    useModule(reroute);
+  const useReroutes = () => {
+    useModule(reroutes);
     const dispatch = useDispatch();
 
     const { path } = useRouteMatch();
@@ -190,12 +190,12 @@ const createReroute = (key: string) => {
     const pathRef = useRef<string | null>(null);
 
     if (pathRef.current !== path) {
-      dispatch(reroute.actions.takeRoot({ base: path, history }));
+      dispatch(reroutes.actions.takeRoot({ base: path, history }));
       pathRef.current = path;
     }
   };
 
-  return { reroute, useReroute, createLocationChangedMatcher };
+  return { reroutes, useReroutes, createLocationChangedMatcher };
 };
 
-export default createReroute;
+export default createReroutes;

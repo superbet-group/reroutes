@@ -9,7 +9,7 @@ export default defineConfig({
     minify: "terser",
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: "Reroute",
+      name: "Reroutes",
       formats: ["es", "umd", "iife"],
     },
     rollupOptions: {
@@ -21,7 +21,6 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     coverage: {
-      enabled: true,
       reporter: ["lcovonly", "text"],
       reportsDirectory: "coverage",
     },
