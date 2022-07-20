@@ -45,7 +45,8 @@
   "scripts": {
     "build": "vite build && tsc",
     "dev": "vite",
-    "test": "vitest run"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "license": "MIT",
   "dependencies": {

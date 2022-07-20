@@ -21,7 +21,6 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     coverage: {
-      enabled: true,
       reporter: ["lcovonly", "text"],
       reportsDirectory: "coverage",
     },
