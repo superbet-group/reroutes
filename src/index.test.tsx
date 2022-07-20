@@ -5,19 +5,19 @@ import { createDynamicStore } from "remodules";
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import { MemoryRouter, Route, Switch } from "react-router";
 
-import createReroute from ".";
+import createReroutes from ".";
 
 afterEach(cleanup);
 
-describe("exports a createReroute function, that", () => {
+describe("exports a createReroutes function, that", () => {
   it("returns an object", () => {
-    expect(createReroute).toBeInstanceOf(Function);
-    expect(createReroute("test")).toBeInstanceOf(Object);
+    expect(createReroutes).toBeInstanceOf(Function);
+    expect(createReroutes("test")).toBeInstanceOf(Object);
   });
 
-  describe("returned object has a reroute property, that", () => {
+  describe("returned object has a reroutes property, that", () => {
     it("is an object", () => {
-      expect(createReroute("test").reroute).toBeInstanceOf(Object);
+      expect(createReroutes("test").reroutes).toBeInstanceOf(Object);
     });
 
     describe("has a selectors property, that", () => {
@@ -39,13 +39,13 @@ describe("exports a createReroute function, that", () => {
         "hash",
         "state",
       ] as const)("selects %s property of the state", (selector) => {
-        const { reroute, useReroute } = createReroute("test");
+        const { reroutes, useReroutes } = createReroutes("test");
 
-        expect(reroute.selectors[selector]).toBeInstanceOf(Function);
+        expect(reroutes.selectors[selector]).toBeInstanceOf(Function);
 
         const Test = () => {
-          useReroute();
-          const state = useSelector(reroute.selectors[selector]);
+          useReroutes();
+          const state = useSelector(reroutes.selectors[selector]);
 
           return <div data-testid="test">{String(state)}</div>;
         };
@@ -73,17 +73,17 @@ describe("exports a createReroute function, that", () => {
     });
   });
 
-  describe("returned object has a useReroute property, that", () => {
+  describe("returned object has a useReroutes property, that", () => {
     it("is a function", () => {
-      expect(createReroute("test").useReroute).toBeInstanceOf(Function);
+      expect(createReroutes("test").useReroutes).toBeInstanceOf(Function);
     });
 
     it("ensures base is set to current route", () => {
-      const { reroute, useReroute } = createReroute("test");
+      const { reroutes, useReroutes } = createReroutes("test");
 
       const Test = () => {
-        useReroute();
-        const base = useSelector(reroute.selectors.base);
+        useReroutes();
+        const base = useSelector(reroutes.selectors.base);
 
         return <div data-testid="test">{base}</div>;
       };
@@ -114,20 +114,20 @@ describe("exports a createReroute function, that", () => {
 
   describe("returned object has a createLocationChangedMatcher property, that", () => {
     it("is a function", () => {
-      expect(createReroute("test").createLocationChangedMatcher).toBeInstanceOf(
-        Function
-      );
+      expect(
+        createReroutes("test").createLocationChangedMatcher
+      ).toBeInstanceOf(Function);
     });
 
     describe("returns a matcher function, that", () => {
       const testPath = "/test";
-      const { reroute, createLocationChangedMatcher } = createReroute("test");
+      const { reroutes, createLocationChangedMatcher } = createReroutes("test");
       const matcher = createLocationChangedMatcher(testPath);
 
       it("does not match a route change to a different path", () => {
         expect(
           matcher(
-            reroute.actions.locationChanged({
+            reroutes.actions.locationChanged({
               action: "INIT",
               location: {
                 pathname: "/not-test",
@@ -143,7 +143,7 @@ describe("exports a createReroute function, that", () => {
       it("matches a route change to the given path", () => {
         expect(
           matcher(
-            reroute.actions.locationChanged({
+            reroutes.actions.locationChanged({
               action: "INIT",
               location: {
                 pathname: testPath,
@@ -160,8 +160,8 @@ describe("exports a createReroute function, that", () => {
 });
 
 describe("application flow tests", () => {
-  const { reroute, useReroute, createLocationChangedMatcher } =
-    createReroute("test");
+  const { reroutes, useReroutes, createLocationChangedMatcher } =
+    createReroutes("test");
 
   const Example = () => {
     return <div>Example</div>;
@@ -171,28 +171,28 @@ describe("application flow tests", () => {
     const dispatch = useDispatch();
     return (
       <nav>
-        <button onClick={() => dispatch(reroute.actions.push("/example"))}>
+        <button onClick={() => dispatch(reroutes.actions.push("/example"))}>
           Push /example
         </button>
-        <button onClick={() => dispatch(reroute.actions.push("/test"))}>
+        <button onClick={() => dispatch(reroutes.actions.push("/test"))}>
           Push /test
         </button>
-        <button onClick={() => dispatch(reroute.actions.push("/test2"))}>
+        <button onClick={() => dispatch(reroutes.actions.push("/test2"))}>
           Push /test2
         </button>
-        <button onClick={() => dispatch(reroute.actions.push("/test3"))}>
+        <button onClick={() => dispatch(reroutes.actions.push("/test3"))}>
           Push /test3
         </button>
-        <button onClick={() => dispatch(reroute.actions.replace("/replaced"))}>
+        <button onClick={() => dispatch(reroutes.actions.replace("/replaced"))}>
           Replace /replaced
         </button>
-        <button onClick={() => dispatch(reroute.actions.go(-1))}>Go -1</button>
-        <button onClick={() => dispatch(reroute.actions.go(1))}>Go +1</button>
-        <button onClick={() => dispatch(reroute.actions.go(2))}>Go +2</button>
-        <button onClick={() => dispatch(reroute.actions.goBack())}>
+        <button onClick={() => dispatch(reroutes.actions.go(-1))}>Go -1</button>
+        <button onClick={() => dispatch(reroutes.actions.go(1))}>Go +1</button>
+        <button onClick={() => dispatch(reroutes.actions.go(2))}>Go +2</button>
+        <button onClick={() => dispatch(reroutes.actions.goBack())}>
           Go back
         </button>
-        <button onClick={() => dispatch(reroute.actions.goForward())}>
+        <button onClick={() => dispatch(reroutes.actions.goForward())}>
           Go forward
         </button>
       </nav>
@@ -200,8 +200,8 @@ describe("application flow tests", () => {
   };
 
   const LocationDisplay = () => {
-    const action = useSelector(reroute.selectors.action);
-    const location = useSelector(reroute.selectors.location);
+    const action = useSelector(reroutes.selectors.action);
+    const location = useSelector(reroutes.selectors.location);
 
     return (
       <div>
@@ -214,7 +214,7 @@ describe("application flow tests", () => {
   const store = createDynamicStore({ reducer: (state = {}) => state });
 
   const Wrapper = ({ children }: PropsWithChildren<{}>) => {
-    useReroute();
+    useReroutes();
 
     return <>{children}</>;
   };

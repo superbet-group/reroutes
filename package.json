@@ -1,10 +1,10 @@
 {
-  "name": "reroute",
+  "name": "reroutes",
   "version": "1.0.0",
   "description": "React Router connected to Redux using Remodules",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/superbet-group/reroute.git"
+    "url": "ssh://github.com/superbet-group/reroutes.git"
   },
   "files": [
     "dist",
@@ -14,14 +14,14 @@
     "LICENSE",
     "CONTRIBUTING.md"
   ],
-  "main": "dist/reroute.umd.js",
-  "unpkg": "dist/reroute.iife.js",
-  "jsdelivr": "dist/reroute.iife.js",
-  "module": "./dist/reroute.js",
+  "main": "dist/reroutes.umd.js",
+  "unpkg": "dist/reroutes.iife.js",
+  "jsdelivr": "dist/reroutes.iife.js",
+  "module": "./dist/reroutes.js",
   "exports": {
     ".": {
-      "import": "./dist/reroute.js",
-      "require": "./dist/reroute.umd.js"
+      "import": "./dist/reroutes.js",
+      "require": "./dist/reroutes.umd.js"
     }
   },
   "types": "./dist/index.d.ts",
